@@ -28,11 +28,14 @@
         }
 
         function decodeJSON(goodResponse) {
-            return goodResponse.json();
+            return goodResponse.json();   //outputs JS object. 
         }
 
         function getFirstQuote(jsonResponse) {
-            return jsonResponse.contents.quotes[0];
+            return jsonResponse.contents.quotes[0]; 
+            //.contents.quotes gives an array of objects, 
+            //.contents.quotes[0] gives the first object in that array
+            //.contents.quotes[0] object contains a lot of info, we process the require info in getQuoteAndAuthor
         }
 
         function log(data){
@@ -41,7 +44,8 @@
         }
 
         function getQuoteAndAuthor(quoteObject) {
-            return {author: quoteObject.author, quote: quoteObject.quote}
+            return {author: quoteObject.author, quote: quoteObject.quote};
+            //returns object with relevant info from th quote (i.e. the author and the quote itself)
         }
 
         function handleErrors(error) {
@@ -50,8 +54,10 @@
 
         function getQuote(searchString, callback, errorHandler){
             console.log("Searching API for ", searchString);
-            initObject = { headers : {'X-TheySaidSo-Api-Secret':'OtEYEgN0fx1d3lDOJYVWFweF'} }
-            searchParams = "minlength=60&maxlength=150&sfw=True";
+            initObject = { 
+                headers : {'X-TheySaidSo-Api-Secret':'OtEYEgN0fx1d3lDOJYVWFweF'} //API key
+            }
+            searchParams = "minlength=60&maxlength=150&sfw=True";   //determines legnth of quote (need to fix sfw/"no swear word" bug)
             fetch(`http://quotes.rest/quote/search.json?${searchParams}&query=${searchString}`, initObject)
             .then(dieIfBadResponse)  // the object fetch returns should have a property .ok
             .then(decodeJSON)        // we need to run the .json() method on the raw object
@@ -63,12 +69,12 @@
         
         function submitHandler(event){
             event.preventDefault();
-            const searchInput = document.getElementById("searchTerm");
+            const searchInput = document.getElementById("searchTerm"); // change to search Input
             getQuote(searchInput.value, console.log, handleErrors)
         }
 
-        const searchForm = document.getElementById("searchForm");
-        searchForm.onsubmit = submitHandler;
+        const searchForm = document.getElementById("searchForm"); //might need to change to "search"
+        searchForm.onsubmit = submitHandler; //.onsubmit is a browser event that allows the form to be submitted by clicking the button (or pressing "enter")
 
     </script>
 </html>
