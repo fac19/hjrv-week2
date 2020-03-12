@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <meta name="description" content="The HTML5 Herald">
+  <meta name="author" content="SitePoint">
+  <!-- <link rel="stylesheet" href="css/styles.css?v=1.0"> --> 
+</head>
+<body>
+  <script>
+    let word = 'gold';   //Word that we are fetching
+
+    function getSynonym(obj, callback, errorHandler){
+        let paramsObject =
+        { // Searching the word
+          "method": "GET",  // Our request is for information only
+          "headers":
+              { // Request headers
+                  "x-rapidapi-host": "wordsapiv1.p.rapidapi.com",
+                  "x-rapidapi-key": "2cca6266d8mshb27e3afc60047d3p1a5a0cjsn2ac41949f557" // Access key
+              } 
+        }
+        fetch("https://wordsapiv1.p.rapidapi.com/words/" + obj.answer + "/synonyms", paramsObject) 
+        .then(response => response.json()) // Get JSON when available
+        .then(data => {
+            // data.synonyms is an array of all synonyms.
+            let synonyms = [ data.synonyms[0], data.synonyms[1], data.synonyms[2] ];
+            obj.synonyms = synonyms;
+            callback(obj);
+        })
+        .catch(errorHandler);
+    }
+
+    getSynonym({ answer: "angry" }, console.log, console.log );
+
+  </script>
+</body>
+</html>
+
+<!-- EXAMPLE FROM WEBSITE
+  
+-->
+<!-- RESPONSE EXAMPLE
+{2 items
+  "word":"hatchback"
+  "typeOf":[6 items
+  0:"car door"
+  1:"auto"
+  2:"automobile"
+  3:"car"
+  4:"machine"
+  5:"motorcar"
+  ]
+  } -->
