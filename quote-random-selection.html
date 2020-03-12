@@ -15,13 +15,24 @@
         var quoteArray = quote.split(" "); // split into word array
         var randomIndex = Math.floor(Math.random()*quoteArray.length); // might need to keep this for elsewhere // pick random word 
         var selectedWord = quoteArray[randomIndex]; // set new word
+       
+        // Extra IF statement for proper nouns. 
+        // if ((randomIndex > 0) && selectedWord.slice(0,1) == selectedWord.slice(0,1).toUpperCase()){
+        //   var newArray = quoteArray.splice(randomIndex, randomIndex+1);
+        //   console.log(newArray);
+        //   var newQuote = newArray.join(" ");
+        //   findAWord(newQuote);
+        // }
+        
         if (selectedWord.slice(-1) === 's' && selectedWord.slice(-2, -1) !== 's') {
           selectedWord = selectedWord.substring(0, selectedWord.length-1);
           return selectedWord; // return one word
         } // ensures words are not plural
+        
+        console.log(selectedWord);
       }
     
-      findAWord("dress");
+      findAWord("Baboon Dress cat dog mouse");
   
   </script>
 </body>
