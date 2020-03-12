@@ -63,19 +63,19 @@ function findAWord(object){
         
           for (let i=0; i<quoteArray.length; i++){
             //longer than 3 letters, not a proper noun, does not include '
-            if ((quoteArray[i].length > 3) && (quoteArray[i].slice(0,1) !== quoteArray[i].slice(0,1).toUpperCase()) && (quoteArray[i].indexOf(`'`) === -1)) {
+            if ((quoteArray[i].length > 5) && (quoteArray[i].slice(0,1) !== quoteArray[i].slice(0,1).toUpperCase()) && (quoteArray[i].indexOf(`'`) === -1)) {
               selectedWord = quoteArray[i];
               object.indexOfChangedWord = i;
             }
           }
+
+        selectedWord = selectedWord.replace(/[^\w\s]|_/g, "").replace(/\s+/g, " ");
           
         //ensures words are not plural.
         if (selectedWord.slice(-1) === 's' && selectedWord.slice(-2, -1) !== 's') {
             selectedWord = selectedWord.substring(0, selectedWord.length-1);
         }
-
-        selectedWord = selectedWord.replace(/[^\w\s]|_/g, "").replace(/\s+/g, " ");
-        
+       
         //append selectedWord to object
         object.answer = selectedWord;
         getSynonym(object, updateScreen, handleErrors);
@@ -129,7 +129,14 @@ function updateScreen(obj){
     let insertPoint = randomInt(0,3);
     choices.splice(insertPoint, 0, obj.answer);
     console.log( "CHOICES:", choices );
+
+    document.getElementById("quoteText").innerHTML = quoteString;
     
+    document.getElementById("answerButtonOne").innerHTML = choices[0];
+    document.getElementById("answerButtonTwo").innerHTML = choices[1];
+    document.getElementById("answerButtonThree").innerHTML = choices[2];
+    document.getElementById("answerButtonFour").innerHTML = choices[3];
+
     // Update the relevant elements on screen
     // console.log("Pretending to update the screen with the data within this object:", obj);
 
