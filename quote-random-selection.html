@@ -8,31 +8,32 @@
   <!-- <link rel="stylesheet" href="css/styles.css?v=1.0"> --> 
 </head>
 <body class="wrapper" id="wrapper">
-    
   <script>
 
-      function findAWord(quote) { 
-        var quoteArray = quote.split(" "); // split into word array
-        var randomIndex = Math.floor(Math.random()*quoteArray.length); // might need to keep this for elsewhere // pick random word 
-        var selectedWord = quoteArray[randomIndex]; // set new word
-       
-        // Extra IF statement for proper nouns. 
-        // if ((randomIndex > 0) && selectedWord.slice(0,1) == selectedWord.slice(0,1).toUpperCase()){
-        //   var newArray = quoteArray.splice(randomIndex, randomIndex+1);
-        //   console.log(newArray);
-        //   var newQuote = newArray.join(" ");
-        //   findAWord(newQuote);
-        // }
+      function findAWord(object, callback) { 
+        var quoteArray = object.quote.split(" "); // split into word array
+        var selectedWord; // set new word
         
+          for (let i=0; i<quoteArray.length; i++){
+            //longer than 3 letters, not a proper noun, does not include '
+            if ((quoteArray[i].length > 3) && (quoteArray[i].slice(0,1) !== quoteArray[i].slice(0,1).toUpperCase()) && (quoteArray[i].indexOf(`'`) === -1)) {
+              selectedWord = quoteArray[i];
+              object.indexOfChangedWord = i;
+            }
+          }
+          
+        //ensures words are not plural.
         if (selectedWord.slice(-1) === 's' && selectedWord.slice(-2, -1) !== 's') {
           selectedWord = selectedWord.substring(0, selectedWord.length-1);
-          return selectedWord; // return one word
-        } // ensures words are not plural
+        }
         
-        console.log(selectedWord);
+        //append selectedWord to object
+        object.answer = selectedWord;
       }
     
-      findAWord("Baboon Dress cat dog mouse");
+      findAWord({quote: "Baboon dress's dog mouse cats"}, console.log);
+
+
   
   </script>
 </body>
