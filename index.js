@@ -3,6 +3,27 @@ let ANSWER = "";
 const searchForm = document.getElementById("search"); //might need to change to "search"
 searchForm.onsubmit = submitHandler; //.onsubmit is a browser event that allows the form to be submitted by clicking the button (or pressing "enter")
 
+function submitHandler(event){
+    event.preventDefault();
+    const searchInput = document.getElementById("searchInput"); // change to search Input
+    getQuote(searchInput.value, findAWord, handleErrors)
+}
+
+function getQuote(searchString, callback, errorHandler){
+    console.log("Searching API for ", searchString);
+    initObject = { 
+        headers : {'X-TheySaidSo-Api-Secret':'OtEYEgN0fx1d3lDOJYVWFweF'} //API key
+    }
+    searchParams = "minlength=60&maxlength=150&sfw=True";   //determines legnth of quote (need to fix sfw/"no swear word" bug)
+    fetch(`http://quotes.rest/quote/search.json?${searchParams}&query=${searchString}`, initObject)
+    .then(dieIfBadResponse)  // the object fetch returns should have a property .ok
+    .then(decodeJSON)        // we need to run the .json() method on the raw object
+    .then(getFirstQuote)     // we need the first element of the Array at object.contents.quotes
+    .then(getQuoteAndAuthor) // we need to return author and quote in our own object
+    .then(callback)          // we need to call the callback with the object we received
+    .catch(errorHandler);    // we need to do something with any errors objects we get
+}
+
 function dieIfBadResponse(response) {
     if (response.ok) {
         return response
@@ -22,35 +43,43 @@ function getFirstQuote(jsonResponse) {
     //.contents.quotes[0] object contains a lot of info, we process the require info in getQuoteAndAuthor
 }
 
-function log(data){
-    console.log("DATA:", data);
-    return data;
-}
-
 function getQuoteAndAuthor(quoteObject) {
     return {author: quoteObject.author, quote: quoteObject.quote};
     //returns object with relevant info from th quote (i.e. the author and the quote itself)
+}
+
+function log(data){
+    console.log("DATA:", data);
+    return data;
 }
 
 function handleErrors(error) {
     console.log(error.message);
 } 
 
-function getQuote(searchString, callback, errorHandler){
-    console.log("Searching API for ", searchString);
-    initObject = { 
-        headers : {'X-TheySaidSo-Api-Secret':'OtEYEgN0fx1d3lDOJYVWFweF'} //API key
-    }
-    searchParams = "minlength=60&maxlength=150&sfw=True";   //determines legnth of quote (need to fix sfw/"no swear word" bug)
-    fetch(`http://quotes.rest/quote/search.json?${searchParams}&query=${searchString}`, initObject)
-    .then(dieIfBadResponse)  // the object fetch returns should have a property .ok
-    .then(decodeJSON)        // we need to run the .json() method on the raw object
-    .then(getFirstQuote)     // we need the first element of the Array at object.contents.quotes
-    .then(getQuoteAndAuthor) // we need to return author and quote in our own object
-    .then(callback)          // we need to call the callback with the object we received
-    .catch(errorHandler);    // we need to do something with any errors objects we get
-}
+function findAWord(object){
+    var quoteArray = object.quote.split(" "); // split into word array
+        var selectedWord; // set new word
+        
+          for (let i=0; i<quoteArray.length; i++){
+            //longer than 3 letters, not a proper noun, does not include '
+            if ((quoteArray[i].length > 3) && (quoteArray[i].slice(0,1) !== quoteArray[i].slice(0,1).toUpperCase()) && (quoteArray[i].indexOf(`'`) === -1)) {
+              selectedWord = quoteArray[i];
+              object.indexOfChangedWord = i;
+            }
+          }
+          
+        //ensures words are not plural.
+        if (selectedWord.slice(-1) === 's' && selectedWord.slice(-2, -1) !== 's') {
+            selectedWord = selectedWord.substring(0, selectedWord.length-1);
+        }
 
+        selectedWord = selectedWord.replace(/[^\w\s]|_/g, "").replace(/\s+/g, " ");
+        
+        //append selectedWord to object
+        object.answer = selectedWord;
+        getSynonym(object, updateScreen, handleErrors);
+}
 
 function getSynonym(obj, callback, errorHandler){
     let paramsObject =
@@ -68,22 +97,10 @@ function getSynonym(obj, callback, errorHandler){
         // data.synonyms is an array of all synonyms.
         let synonyms = [ data.synonyms[0], data.synonyms[1], data.synonyms[2] ];
         obj.synonyms = synonyms;
+        console.log("synonym obj", obj); 
         callback(obj);
     })
     .catch(errorHandler);
-}
-
-function submitHandler(event){
-    event.preventDefault();
-    const searchInput = document.getElementById("searchInput"); // change to search Input
-    getQuote(searchInput.value, findAWord, handleErrors)
-}
-
-function findAWord(obj){
-    console.log("Pretending to find a word within:", obj.quote);
-    obj.answer = "easy";
-    // callback(obj, console.log, handleErrors);
-    getSynonym(obj, updateScreen, handleErrors);
 }
 
 function randomInt(min, inclusiveMax) {
