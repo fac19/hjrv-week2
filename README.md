@@ -1,6 +1,6 @@
 # hjrv-week2
 
-Welcome to the README for our [**very fun game**]().
+Welcome to the README for our [**very fun game**](https://fac19.github.io/hjrv-week2/).
 
 ## The game
 
