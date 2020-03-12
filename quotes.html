@@ -1,1 +1,46 @@
+<!DOCTYPE html>
+<html lang= "en-gb">
+    <head>
+        <meta charset="utf-8"/>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="Description" content="Description text here">
+        <title>Quotes API testing</title>
+    </head>
+    <body>
+        <main>
+            <section id="main__section">
+                Search quotes API
+                <form id="searchForm">
+                    <input type="text" id="searchTerm" />
+                    <button>Go</button>
+                </form>
+            </section>
+        </main>
+    </body>
+    <script>
+
+        function getQuote(searchString, callback){
+            console.log("Searching API for", searchString);
+            initObject = { headers : {'X-TheySaidSo-Api-Secret':'OtEYEgN0fx1d3lDOJYVWFweF'} }
+            searchParams = "maxlength=150&sfw=True";
+            fetch(`http://quotes.rest/quote/search.json?${searchParams}&query=${searchString}`, initObject)
+            .then(dieIfBadResponse)  // the object fetch returns should have a property .ok
+            .then(decodeJSON)        // we need to run the .json() method on the raw object
+            .then(getFirstQuote)     // we need the first element of the Array at object.contents.quotes
+            .then(getQuoteAndAuthor) // we need to return author and quote in our own object
+            .then(callback)          // we need to call the callback with the object we received
+            .catch(handleErrors);    // we need to do something with any errors objects we get
+        }
+        
+        function submitHandler(event){
+            event.preventDefault();
+            const searchInput = document.getElementById("searchTerm");
+            getQuote(searchInput.value, console.log)
+        }
+
+        const searchForm = document.getElementById("searchForm");
+        searchForm.onsubmit = submitHandler;
+
+    </script>
+</html>
 
