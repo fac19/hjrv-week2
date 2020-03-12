@@ -5,27 +5,34 @@
   <title>Fun Quote Game</title>
   <meta name="description" content="This is a fun game using APIs to automate a guessing game based on famous quotes">
   <meta name="author" content="HJRV">
-  <!-- <link rel="stylesheet" href="css/styles.css?v=1.0"> --> 
+  <link rel="stylesheet" type="text/css" href="index.css"> 
 </head>
+
 <body class="wrapper" id="wrapper">
+
     <header class="title" id="title">
-        Page title
+        <h1>Direct Quote</h1>
     </header>
-    <form class="search" id="search">
-        <label for="search" class="search search__label">Word:</label>
+
+    <form class="search search__container" id="search">
+        <label for="search" class="search search__label">Search:</label>
         <input type="text" id="searchInput" name="word">
-        <button type="submit" class="search search__button">Search</button>
+        <button type="submit" class="search search__button">GO!</button>
     </form>
+
     <article class="quote" id="quote">
-        "Retrieved quote"
+        <p>"Retrieved quote"</p>
         <!-- Quote displayed -->
     </article>
-    <div class="answer" id="answer">
+
+    <div class="answer answer__container" id="answer">
         <button class="answer answer__button" id="answerButtonOne">1<!--1--></button>
         <button class="answer answer__button" id="answerButtonTwo">2<!--2--></button>
         <button class="answer answer__button" id="answerButtonThree">3<!--3--></button>
         <button class="answer answer__button" id="answerButtonFour">4<!--4--></button>
     </div>
-  <script src="index.js"></script>
+
+  <script src="javascript.js">
+  </script>
 </body>
 </html>

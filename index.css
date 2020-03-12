@@ -1,0 +1,85 @@
+* {
+    box-sizing: border-box;
+    border: 0px;
+    margin: 0px;
+   }
+
+body{
+    --content-width: 80%;
+}
+   .wrapper {
+       display: flex;
+       flex-direction: column;
+       align-items: center;
+       height: 100vh;
+   }
+   
+   h1 {
+       font-size: 3rem;
+   }
+
+   .search__container {
+       font-size: 1.5rem;
+   }
+   #searchInput {
+       border: 1px solid black;
+       font-size: 1.5rem;
+       width: 60%
+   }
+
+   .search__button {
+    font-size: 1.5rem;
+   }
+
+   .quote {
+        height: 50%;
+        /* border: 1px solid black; */
+        width: var(--content-width);
+        display: flex; 
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 2%;
+        text-align: justify;
+        font-size: 2rem;
+   }
+
+   .answer__container {
+       width: var(--content-width);
+       height: 40%;
+       /* border: 1px solid black; */
+       display: flex;
+       flex-direction: column;    
+   }
+   
+   .answer__button {
+       /* margin: 1.5% 0 1.5% 0; */
+       height: 20%;
+       border: 1px solid black;
+       font-size: 3rem;
+   }
+
+   .answer__button:hover, .search__button:hover {
+       background-color: pink;
+   }
+
+   .correct-answer {
+       background-color: green
+   }
+
+   .incorrect-answer {
+       background-color: red;
+   }
+
+   @media only screen and (min-width: 800px) {
+       .answer__container {
+           flex-direction: row;
+           column: 2;
+       }
+
+       .answer__button {
+           width: 50%;
+           height: 50%;
+           flex-wrap: wrap;
+       }
+   }
