@@ -19,23 +19,52 @@
     </body>
     <script>
 
-        function getQuote(searchString, callback){
-            console.log("Searching API for", searchString);
+        function dieIfBadResponse(response) {
+            if (response.ok) {
+                return response
+            }  else {
+                throw new Error("Response not OK")
+            }
+        }
+
+        function decodeJSON(goodResponse) {
+            return goodResponse.json();
+        }
+
+        function getFirstQuote(jsonResponse) {
+            return jsonResponse.contents.quotes[0];
+        }
+
+        function log(data){
+            console.log("DATA:", data);
+            return data;
+        }
+
+        function getQuoteAndAuthor(quoteObject) {
+            return {author: quoteObject.author, quote: quoteObject.quote}
+        }
+
+        function handleErrors(error) {
+            console.error(error.message);
+        } 
+
+        function getQuote(searchString, callback, errorHandler){
+            console.log("Searching API for ", searchString);
             initObject = { headers : {'X-TheySaidSo-Api-Secret':'OtEYEgN0fx1d3lDOJYVWFweF'} }
-            searchParams = "maxlength=150&sfw=True";
+            searchParams = "minlength=60&maxlength=150&sfw=True";
             fetch(`http://quotes.rest/quote/search.json?${searchParams}&query=${searchString}`, initObject)
             .then(dieIfBadResponse)  // the object fetch returns should have a property .ok
             .then(decodeJSON)        // we need to run the .json() method on the raw object
             .then(getFirstQuote)     // we need the first element of the Array at object.contents.quotes
             .then(getQuoteAndAuthor) // we need to return author and quote in our own object
             .then(callback)          // we need to call the callback with the object we received
-            .catch(handleErrors);    // we need to do something with any errors objects we get
+            .catch(errorHandler);    // we need to do something with any errors objects we get
         }
         
         function submitHandler(event){
             event.preventDefault();
             const searchInput = document.getElementById("searchTerm");
-            getQuote(searchInput.value, console.log)
+            getQuote(searchInput.value, console.log, handleErrors)
         }
 
         const searchForm = document.getElementById("searchForm");
