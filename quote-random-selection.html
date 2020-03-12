@@ -13,12 +13,15 @@
 
       function findAWord(quote) { 
         var quoteArray = quote.split(" "); // split into word array
-        var randomIndex = Math.floor(Math.random()*quoteArray.length); // pick random word
+        var randomIndex = Math.floor(Math.random()*quoteArray.length); // might need to keep this for elsewhere // pick random word 
         var selectedWord = quoteArray[randomIndex]; // set new word
-        return selectedWord; // return one word
+        if (selectedWord.slice(-1) === 's' && selectedWord.slice(-2, -1) !== 's') {
+          selectedWord = selectedWord.substring(0, selectedWord.length-1);
+          return selectedWord; // return one word
+        } // ensures words are not plural
       }
     
-      findAWord("one two three four five");
+      findAWord("dress");
   
   </script>
 </body>
