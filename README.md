@@ -10,7 +10,7 @@ You play this game by searching for a quote. But... a word is missing!
 
 Don't worry, we've found you four options, and all you have to do is guess the right one.
 
-Choose wisely to st
+Choose wisely and complete the quote.
 
 ## APIs
 
