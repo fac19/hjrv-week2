@@ -15,7 +15,7 @@ function getQuote(searchString, callback, errorHandler){
         headers : {'X-TheySaidSo-Api-Secret':'OtEYEgN0fx1d3lDOJYVWFweF'} //API key
     }
     searchParams = "minlength=60&maxlength=150&sfw=True";   //determines legnth of quote (need to fix sfw/"no swear word" bug)
-    fetch(`http://quotes.rest/quote/search.json?${searchParams}&query=${searchString}`, initObject)
+    fetch(`https://quotes.rest/quote/search.json?${searchParams}&query=${searchString}`, initObject)
     .then(dieIfBadResponse)  // the object fetch returns should have a property .ok
     .then(decodeJSON)        // we need to run the .json() method on the raw object
     .then(getFirstQuote)     // we need the first element of the Array at object.contents.quotes
