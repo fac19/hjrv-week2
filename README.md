@@ -1,4 +1,4 @@
-# hjrv-week2
+# DIRECT QUOTE - a fun game for fun people
 
 Welcome to the README for our [**very fun game**](https://fac19.github.io/hjrv-week2/).
 
