@@ -13,12 +13,16 @@ for(let h = 0; h<=buttons.length-1; h++){
     buttons[h].addEventListener("click", isCorrect);
 }
 
-
 const searchForm = document.getElementById("search"); //might need to change to "search"
 searchForm.onsubmit = submitHandler; //.onsubmit is a browser event that allows the form to be submitted by clicking the button (or pressing "enter")
 
 function submitHandler(event){
     event.preventDefault();
+    for (let j = 0; j <= buttons.length-1; j++) {
+        buttons[j].style.pointerEvents = "auto";
+        buttons[j].classList.remove("correct-answer");
+        buttons[j].classList.remove("incorrect-answer");
+    }
     const searchInput = document.getElementById("searchInput"); // change to search Input
     document.getElementById("quoteText").innerHTML = "Searching for quotes...";
     getQuote(searchInput.value, findAWord, handleErrors);
