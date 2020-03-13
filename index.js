@@ -6,7 +6,8 @@ searchForm.onsubmit = submitHandler; //.onsubmit is a browser event that allows 
 function submitHandler(event){
     event.preventDefault();
     const searchInput = document.getElementById("searchInput"); // change to search Input
-    getQuote(searchInput.value, findAWord, handleErrors)
+    document.getElementById("quoteText").innerHTML = "Searching for quotes...";
+    getQuote(searchInput.value, findAWord, handleErrors);
 }
 
 function getQuote(searchString, callback, errorHandler){
@@ -40,12 +41,12 @@ function getFirstQuote(jsonResponse) {
     return jsonResponse.contents.quotes[0]; 
     //.contents.quotes gives an array of objects, 
     //.contents.quotes[0] gives the first object in that array
-    //.contents.quotes[0] object contains a lot of info, we process the require info in getQuoteAndAuthor
 }
 
 function getQuoteAndAuthor(quoteObject) {
     return {author: quoteObject.author, quote: quoteObject.quote};
-    //returns object with relevant info from th quote (i.e. the author and the quote itself)
+    // The quotes object contains a lot of info, we process the require info in getQuoteAndAuthor
+    // returns object with relevant info from th quote (i.e. the author and the quote itself)
 }
 
 function log(data){
@@ -55,6 +56,8 @@ function log(data){
 
 function handleErrors(error) {
     console.log(error.message);
+    document.getElementById("quoteText").innerHTML = error.message;
+    throw error;
 } 
 
 function findAWord(object){
