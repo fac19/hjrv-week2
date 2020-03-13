@@ -84,17 +84,3 @@ body{
            height: 50%;
        }
    }
-
-   @media (pointer: none) {
-    .answer__container {
-        flex-direction: row;
-        column: 2;
-        flex-wrap: wrap;
-        margin-bottom: 5%;
-    }
-
-    .answer__button {
-        width: 50%;
-        height: 50%;
-    }
-   }
