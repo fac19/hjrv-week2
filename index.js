@@ -1,10 +1,28 @@
 let ANSWER = "";
 
+// Get and array of the buttons
+let buttons = [
+    document.getElementById("answerButtonOne"),
+    document.getElementById("answerButtonTwo"),
+    document.getElementById("answerButtonThree"),
+    document.getElementById("answerButtonFour"),
+];
+
+// Attach event handlers
+for(let h = 0; h<=buttons.length-1; h++){
+    buttons[h].addEventListener("click", isCorrect);
+}
+
 const searchForm = document.getElementById("search"); //might need to change to "search"
 searchForm.onsubmit = submitHandler; //.onsubmit is a browser event that allows the form to be submitted by clicking the button (or pressing "enter")
 
 function submitHandler(event){
     event.preventDefault();
+    for (let j = 0; j <= buttons.length-1; j++) {
+        buttons[j].style.pointerEvents = "auto";
+        buttons[j].classList.remove("correct-answer");
+        buttons[j].classList.remove("incorrect-answer");
+    }
     const searchInput = document.getElementById("searchInput"); // change to search Input
     document.getElementById("quoteText").innerHTML = "Searching for quotes...";
     getQuote(searchInput.value, findAWord, handleErrors);
@@ -55,7 +73,7 @@ function log(data){
 }
 
 function handleErrors(error) {
-    console.log(error.message);
+    console.error(error.message);
     document.getElementById("quoteText").innerHTML = error.message;
     throw error;
 } 
@@ -144,4 +162,21 @@ function updateScreen(obj){
     // Update the relevant elements on screen
     // console.log("Pretending to update the screen with the data within this object:", obj);
 
+    
+
 }
+
+function isCorrect() {
+    for (let j = 0; j <= buttons.length-1; j++) {
+        buttons[j].style.pointerEvents = "none";
+        console.log(buttons[j].innerHTML, ANSWER);
+        if(buttons[j].innerHTML === ANSWER) {
+            console.log("CORRECT")
+            buttons[j].classList.add("correct-answer");
+        } else {
+            console.log("WRONG")
+            buttons[j].classList.add("incorrect-answer");
+        }
+    }
+}
+
