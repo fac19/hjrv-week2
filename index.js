@@ -58,27 +58,28 @@ function handleErrors(error) {
 } 
 
 function findAWord(object){
-    var quoteArray = object.quote.split(" "); // split into word array
-        var selectedWord; // set new word
-        
-          for (let i=0; i<quoteArray.length; i++){
-            //longer than 3 letters, not a proper noun, does not include '
-            if ((quoteArray[i].length > 5) && (quoteArray[i].slice(0,1) !== quoteArray[i].slice(0,1).toUpperCase()) && (quoteArray[i].indexOf(`'`) === -1)) {
-              selectedWord = quoteArray[i];
-              object.indexOfChangedWord = i;
-            }
-          }
+    let quoteArray = object.quote.split(" "); // split into word array
+    
+    // Filter for appropriate words
+    quoteArray = quoteArray
+        .filter( a => a.length > 5 ) // check word length
+        .filter( a => a[0] === a[0].toLowerCase() ) // check first letter is lowercase
+        .filter( a => !a.includes(`'`)); // reject words containing apostrophes
+            
+    // Select a word randomly
+    let selectedWord = quoteArray[randomInt(0,quoteArray.length-1)]
+    
+    // Trim off punctuation
+    selectedWord = selectedWord.replace(/[^\w\s]|_/g, "");
 
-        selectedWord = selectedWord.replace(/[^\w\s]|_/g, "").replace(/\s+/g, " ");
-          
-        //ensures words are not plural.
-        if (selectedWord.slice(-1) === 's' && selectedWord.slice(-2, -1) !== 's') {
-            selectedWord = selectedWord.substring(0, selectedWord.length-1);
-        }
-       
-        //append selectedWord to object
-        object.answer = selectedWord;
-        getSynonym(object, updateScreen, handleErrors);
+    // Depluralise
+    if (selectedWord.slice(-1) === 's' && selectedWord.slice(-2, -1) !== 's') {
+        selectedWord = selectedWord.substring(0, selectedWord.length-1);
+    }
+    
+    // Append selectedWord to object
+    object.answer = selectedWord;
+    getSynonym(object, updateScreen, handleErrors);
 }
 
 function getSynonym(obj, callback, errorHandler){
